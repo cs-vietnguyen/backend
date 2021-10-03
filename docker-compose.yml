@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  core-service:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    links:
+      - mysql
+
+  mysql:
+    image: mysql:5.7.20
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_allowed_packet=1073741824
+    volumes:
+      - local_mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: wpmVHz9eeGLVA8PNnsKvQhJc4MWsQA5YmVZg
+      MYSQL_USER: pomotimer
+      MYSQL_PASSWORD: n7RaLDBND5yR9TRAaZrHL6LgVNtRbUh6ef7x
+      MYSQL_DATABASE: pomotimer
+
+volumes:
+  local_mysql_data:
