@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
+    JWT_PRIVATE_SIGNATURE = "HYubQdSePAuuYWMssnkidefZOQIKmWbFAEsTVNrghCHjgXIUagborfzAblZAbAPRSuyFNN"
+    JWT_HEADER = {"alg": "HS256"}
+
     @validator("BACKEND_CORS_ORIGINS", pre=True)
     def assemble_cors_origins(
         cls, v: Union[str, List[str]]

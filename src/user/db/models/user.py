@@ -12,7 +12,8 @@ class User(Base):
         index=True,
         default=primary_key,
     )
-    full_name = Column(String(50))
-    username = Column(String(50), unique=True, index=True)
-    password = Column(String(100), nullable=False)
+    full_name = Column(String(length=50), default="")
+    phone_number = Column(String(length=20), default="", onupdate="")
+    username = Column(String(length=50), unique=True, index=True)
+    password = Column(String(length=100), nullable=False)
     is_active = Column(Boolean(), default=True)
