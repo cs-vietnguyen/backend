@@ -28,4 +28,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()) -> UserSchemas:
     if not password_manager.verify():
         raise HTTPException(status_code=400, detail="Password is wrong!")
 
-    return AccessToken(sub=user.id).generate()
+    return {
+        "access_token": AccessToken(sub=user.id).generate(),
+        "token_type": "bearer",
+    }

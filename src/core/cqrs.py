@@ -1,7 +1,7 @@
 import inspect
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 from src.db.database_context import DatabaseContextManager
 
@@ -25,7 +25,7 @@ class Action(ABC):
         return inspect.getmodule(self)
 
     @abstractmethod
-    def handler(self):
+    def handler(self) -> Callable:
         pass
 
 
@@ -69,9 +69,9 @@ class Resolver:
         return handler.handle(action)
 
     def lookup_handler(self, action: Action):
-        handler: Handler = action.handler()
+        handler: Callable[..., Handler] = action.handler()
         if handler is not None:
-            return handler()  # type: ignore
+            return handler()
 
 
 class Bus:

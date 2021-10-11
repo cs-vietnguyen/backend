@@ -1,25 +1,15 @@
-from typing import Optional
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 
-from fastapi import Depends, Request
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-
+from src.core.settings import settings
 from src.utils.security import VerifyAccessToken
 
-
-class CustomBearerToken(HTTPBearer):
-    async def __call__(
-        self, request: Request
-    ) -> Optional[HTTPAuthorizationCredentials]:
-        authorization_credentials: Optional[
-            HTTPAuthorizationCredentials
-        ] = await super().__call__(request)
-
-        return authorization_credentials.credentials  # type: ignore
+oauth2_bearer = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/users/login"
+)
 
 
-def authorization(
-    access_token: str = Depends(CustomBearerToken(auto_error=True))
-):
+def authorization(access_token: str = Depends(oauth2_bearer)):
     user_id: str = VerifyAccessToken(access_token=access_token).verify()
 
     return user_id
